@@ -4,9 +4,35 @@
     <name>LibSLPlugin Template</name>
     <vendor>altickium</vendor>
 
+    <!-- Product and plugin compatibility requirements -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java-capable</depends>
 
+    <!-- Text to display as description on Preferences/Settings | Plugin page -->
+    <description>
+        <![CDATA[
+      Simple plugin for LibSL.
+      Support several files.
+    ]]>
+    </description>
+    <change-notes>
+        <![CDATA[
+      <ul>
+        <li><b>0.0.1</b>Start</li>
+      </ul>
+    ]]>
+    </change-notes>
+    
     <resource-bundle>messages.MyBundle</resource-bundle>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType
+                name="LibSL File"
+                implementationClass="com.github.altickium.libslplugin.LibSLFileType"
+                fieldName="INSTANCE"
+                language="LibSL"
+                extensions="lsl"/>
+    </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.altickium.libslplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
