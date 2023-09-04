@@ -35,10 +35,8 @@
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.altickium.libslplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <lang.parserDefinition
+                language="LibSL"
+                implementationClass="com.github.altickium.libslplugin.parser.LibSLParserDefinition"/>
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.altickium.libslplugin.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
 </idea-plugin>

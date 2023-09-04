@@ -1,0 +1,73 @@
+{
+  parserClass="com.github.altickium.libslplugin.parser.LibSLParser"
+  parserUtilClass="com.github.altickium.libslplugin.parser.LibSLParserUtil"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="LibSL"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.github.altickium.libslplugin.psi"
+  psiImplPackage="com.github.altickium.libslplugin.psi.impl"
+
+  //psiImplUtilClass="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyPsiImplUtil"
+
+  //implements="com.github.pyltsin.monkeyplugin.psi.MonkeyCompositeElement"
+  //extends="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyCompositeElementImpl"
+
+  elementTypeHolderClass="com.github.altickium.libslplugin.psi.LibSLTypes"
+  elementTypeClass="com.github.altickium.libslplugin.psi.LibSLElementType"
+  tokenTypeClass="com.github.altickium.libslplugin.psi.LibSLTokenType"
+
+  //elementTypeFactory("var_definition")="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyElementTypeFactory.factory"
+
+   tokens = [
+        IMPORT = "import"
+        INCLUDE = "include"
+        LIBSL = "libsl"
+        LIBRARY = "library"
+        VERSION = "version"
+        LANGUAGE = "language"
+        URL = "url"
+        TYPEALIAS = "typealias"
+        TYPE = "type"
+        TYPES = "types"
+        ENUM = "enum"
+        ANNOTATION = "annotation"
+        AUTOMATON = "automaton"
+        CONCEPT = "concept"
+        VAR = "var"
+        VAL = "val"
+        INITSTATE = "initstate"
+        STATE = "state"
+        FINISHSTATE = "finishstate"
+        SHIFT = "shift"
+        NEW = "new"
+        FUN = "fun"
+        CONSTRUCTOR = "constructor"
+        DESTRUCTOR = "destructor"
+        PROC = "proc"
+        AT = "@"
+        ACTION = "action"
+        REQUIRES = "requires"
+        ENSURES = "ensures"
+        ASSIGNS = "assigns"
+        TRUE = "true"
+        FALSE = "false"
+        DEFINE = "define"
+        IF = "if"
+        ELSE = "else"
+        BY = "by"
+        IS = "is"
+        AS = "as"
+        NULL = "null"
+
+        NEWLINE = "regexp = (\r|\n|\r\n)"
+        WHITESPACE = "regexp:(\s|\t)"
+   ]
+}
+
+simpleFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY
