@@ -6,6 +6,7 @@ fun environment(key: String) = providers.environmentVariable(key)
 
 plugins {
     id("java") // Java support
+    id("antlr")
     alias(libs.plugins.kotlin) // Kotlin support
     alias(libs.plugins.gradleIntelliJPlugin) // Gradle IntelliJ Plugin
     alias(libs.plugins.changelog) // Gradle Changelog Plugin
@@ -13,7 +14,10 @@ plugins {
     alias(libs.plugins.kover) // Gradle Kover Plugin
 }
 
-sourceSets["main"].java.srcDirs("src/main/gen")
+//sourceSets["main"].java.srcDirs("src/main/gen")
+//sourceSets["main"].java.srcDirs("src/main/antlr")
+
+val antlrVersion = "4.12.0"
 group = properties("pluginGroup").get()
 version = properties("pluginVersion").get()
 
@@ -25,6 +29,22 @@ repositories {
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
 //    implementation(libs.annotations)
+    implementation("org.antlr:antlr4-intellij-adaptor:0.1") {
+        constraints {
+            implementation("org.antlr", "antlr4-runtime", antlrVersion) {
+                because("Old runtime leads to 'Could not deserialize ATN' error.")
+            }
+        }
+    }
+    antlr("org.antlr", "antlr4", antlrVersion) {
+        // Not required for 'generateGrammarSource' task.
+        exclude("com.ibm.icu", "icu4j")
+        exclude("org.abego.treelayout", "org.abego.treelayout.core")
+    }
+}
+
+configurations[JavaPlugin.API_CONFIGURATION_NAME].let { apiConfiguration ->
+    apiConfiguration.setExtendsFrom(apiConfiguration.extendsFrom.filter { it.name != "antlr" })
 }
 
 // Set the JVM language level used to build the project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
@@ -66,6 +86,15 @@ koverReport {
 }
 
 tasks {
+
+    compileKotlin {
+        dependsOn(generateGrammarSource)
+    }
+
+    buildSearchableOptions {
+        enabled = false
+    }
+
     wrapper {
         gradleVersion = properties("gradleVersion").get()
     }

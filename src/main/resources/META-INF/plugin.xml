@@ -32,11 +32,9 @@
                 fieldName="INSTANCE"
                 language="LibSL"
                 extensions="lsl"/>
-    </extensions>
-
-    <extensions defaultExtensionNs="com.intellij">
         <lang.parserDefinition
                 language="LibSL"
-                implementationClass="com.github.altickium.libslplugin.parser.LibSLParserDefinition"/>
+                implementationClass="com.github.altickium.libslplugin.LibSLParserDefinition"/>
     </extensions>
+
 </idea-plugin>
