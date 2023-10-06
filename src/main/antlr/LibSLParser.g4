@@ -41,7 +41,7 @@ topLevelDecl
  */
 header:
    (LIBSL lslver=DoubleQuotedString SEMICOLON)
-   (LIBRARY libraryName=Identifier)
+   (LIBRARY libraryName=identifierRule)
    (VERSION ver=DoubleQuotedString)?
    (LANGUAGE lang=DoubleQuotedString)?
    (URL link=DoubleQuotedString)?
@@ -177,6 +177,9 @@ implementedConcepts
    :   implements=Identifier concept (COMMA concept)*
    ;
 
+/*
+ * Fixed here
+ */
 concept
    :   name=Identifier
    ;
@@ -216,7 +219,7 @@ variableDecl
    ;
 
 nameWithType
-   :  name=Identifier COLON type=typeIdentifier
+   :  name=identifierRule COLON type=typeIdentifier
    ;
 
 /*
@@ -304,7 +307,7 @@ functionDeclArgList
    ;
 
 parameter
-   :   annotationUsage* name=Identifier COLON type=typeIdentifier
+   :   annotationUsage* name=identifierRule COLON type=typeIdentifier
    ;
 
 /* annotation
@@ -481,7 +484,7 @@ arrayLiteral
    ;
 
 periodSeparatedFullName
-   :   Identifier
+   :   identifierRule
    |   Identifier (DOT Identifier)*
    |   BACK_QOUTE Identifier (DOT Identifier)* BACK_QOUTE
    ;
@@ -493,4 +496,8 @@ integerNumber
 
 floatNumber
    :  MINUS? Digit+ DOT Digit+ suffix=Identifier
+   ;
+
+identifierRule
+   : Identifier
    ;

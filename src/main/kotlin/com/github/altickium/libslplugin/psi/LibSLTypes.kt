@@ -12,6 +12,7 @@ import org.antlr.intellij.adaptor.lexer.PSIElementTypeFactory
 import org.antlr.intellij.adaptor.lexer.RuleIElementType
 import com.github.altickium.libslplugin.antlr.LabeledRuleIElementType
 import com.github.altickium.libslplugin.LibSLLanguage
+import com.github.altickium.libslplugin.psi.parserrules.*
 
 object LibSLTypes {
     init {
@@ -24,8 +25,8 @@ object LibSLTypes {
 
     private val TOKENS = PSIElementTypeFactory.getTokenIElementTypes(LibSLLanguage.Companion.INSTANCE)
     val SEMICOLON = TOKENS[LibSLLexer.SEMICOLON]!!
-    val ASSIGN_OP = TOKENS[LibSLLexer.ASSIGN_OP]!!
-    val EQ = TOKENS[LibSLLexer.EQ]!!
+
+    //Braces
     val L_BRACE = TOKENS[LibSLLexer.L_BRACE]!!
     val R_BRACE = TOKENS[LibSLLexer.R_BRACE]!!
     val L_BRACKET = TOKENS[LibSLLexer.L_BRACKET]!!
@@ -35,6 +36,11 @@ object LibSLTypes {
     val DOT = TOKENS[LibSLLexer.DOT]!!
     val COLON = TOKENS[LibSLLexer.COLON]!!
     val COMMA = TOKENS[LibSLLexer.COMMA]!!
+
+    //Op
+    //Op
+    val ASSIGN_OP = TOKENS[LibSLLexer.ASSIGN_OP]!!
+    val EQ = TOKENS[LibSLLexer.EQ]!!
     val MINUS_ARROW = TOKENS[LibSLLexer.MINUS_ARROW]!!
     val L_ARROW = TOKENS[LibSLLexer.L_ARROW]!!
     val R_ARROW = TOKENS[LibSLLexer.R_ARROW]!!
@@ -113,12 +119,12 @@ object LibSLTypes {
     val Identifier = TOKENS[LibSLLexer.Identifier]!!
     val DoubleQuotedString = TOKENS[LibSLLexer.DoubleQuotedString]!!
     val Digit = TOKENS[LibSLLexer.Digit]!!
-    val NEWLINE = TOKENS[LibSLLexer.NEWLINE]!!
 
-    //val NEWLINE = TOKENS[LibSLLexer.NEWLINE]!!
+    //EOL
+    val NEWLINE = TOKENS[LibSLLexer.NEWLINE]!!
     val WS = TOKENS[LibSLLexer.WS]!!
     val BR = TOKENS[LibSLLexer.BR]!!
-    public val COMMENT = TOKENS[LibSLLexer.COMMENT]!!
+    val COMMENT = TOKENS[LibSLLexer.COMMENT]!!
     val LINE_COMMENT = TOKENS[LibSLLexer.LINE_COMMENT]!!
 
     object Factory {
@@ -135,142 +141,191 @@ object LibSLTypes {
         }
 
         private val RULES = PSIElementTypeFactory.getRuleIElementTypes(LibSLLanguage.Companion.INSTANCE)
+
+        //
+        private val file = RULES[LibSLParser.RULE_file]
+        private val globalStatement = RULES[LibSLParser.RULE_globalStatement]
+        private val topLevelDecl = RULES[LibSLParser.RULE_topLevelDecl]
+        private val header = RULES[LibSLParser.RULE_header]
+        private val typealiasStatement = RULES[LibSLParser.RULE_typealiasStatement]
+        private val typeDefBlock = RULES[LibSLParser.RULE_typeDefBlock]
+        private val targetType = RULES[LibSLParser.RULE_targetType]
+        private val typeList = RULES[LibSLParser.RULE_typeList]
+        private val typeDefBlockStatement = RULES[LibSLParser.RULE_typeDefBlockStatement]
+        private val enumBlock = RULES[LibSLParser.RULE_enumBlock]
+        private val enumBlockStatement = RULES[LibSLParser.RULE_enumBlockStatement]
+
+        //Semantic types
+        private val typesSection = RULES[LibSLParser.RULE_typesSection]
+        private val semanticTypeDecl = RULES[LibSLParser.RULE_semanticTypeDecl]
+
+        //Simple semantic type
+        private val simpleSemanticType = RULES[LibSLParser.RULE_simpleSemanticType]
+        private val enumSemanticType = RULES[LibSLParser.RULE_enumSemanticType]
+        private val enumSemanticTypeEntry = RULES[LibSLParser.RULE_enumSemanticTypeEntry]
+        private val annotationDecl = RULES[LibSLParser.RULE_annotationDecl]
+        private val annotationDeclParams = RULES[LibSLParser.RULE_annotationDeclParams]
+        private val annotationDeclParamsPart = RULES[LibSLParser.RULE_annotationDeclParamsPart]
         private val actionDecl = RULES[LibSLParser.RULE_actionDecl]
+        private val actionDeclParamList = RULES[LibSLParser.RULE_actionDeclParamList]
+        private val actionParameter = RULES[LibSLParser.RULE_actionParameter]
+        private val automatonDecl = RULES[LibSLParser.RULE_automatonDecl]
+        private val constructorVariables = RULES[LibSLParser.RULE_constructorVariables]
+        private val automatonStatement = RULES[LibSLParser.RULE_automatonStatement]
+        private val implementedConcepts = RULES[LibSLParser.RULE_implementedConcepts]
+        private val concept = RULES[LibSLParser.RULE_concept]
+        private val automatonStateDecl = RULES[LibSLParser.RULE_automatonStateDecl]
+        private val automatonShiftDecl = RULES[LibSLParser.RULE_automatonShiftDecl]
+        private val functionsList = RULES[LibSLParser.RULE_functionsList]
+        private val functionsListPart = RULES[LibSLParser.RULE_functionsListPart]
+        private val variableDecl = RULES[LibSLParser.RULE_variableDecl]
+        private val nameWithType = RULES[LibSLParser.RULE_nameWithType]
+        private val typeIdentifier = RULES[LibSLParser.RULE_typeIdentifier]
+        private val generic = RULES[LibSLParser.RULE_generic]
+        private val variableAssignment = RULES[LibSLParser.RULE_variableAssignment]
+        private val assignmentRight = RULES[LibSLParser.RULE_assignmentRight]
+        private val callAutomatonConstructorWithNamedArgs = RULES[LibSLParser.RULE_callAutomatonConstructorWithNamedArgs]
+        private val namedArgs = RULES[LibSLParser.RULE_namedArgs]
+        private val argPair = RULES[LibSLParser.RULE_argPair]
+        private val headerWithAsterisk = RULES[LibSLParser.RULE_headerWithAsterisk]
+        private val constructorDecl = RULES[LibSLParser.RULE_constructorDecl]
+        private val constructorHeader = RULES[LibSLParser.RULE_constructorHeader]
+        private val destructorDecl = RULES[LibSLParser.RULE_destructorDecl]
+        private val destructorHeader = RULES[LibSLParser.RULE_destructorHeader]
+        private val procDecl = RULES[LibSLParser.RULE_procDecl]
+        private val procHeader = RULES[LibSLParser.RULE_procHeader]
+
+        //Function
+        private val functionDecl = RULES[LibSLParser.RULE_functionDecl]
+        private val functionHeader = RULES[LibSLParser.RULE_functionHeader]
+        private val functionDeclArgList = RULES[LibSLParser.RULE_functionDeclArgList]
+        private val parameter = RULES[LibSLParser.RULE_parameter]
+        //Annotation
+        private val annotationUsage = RULES[LibSLParser.RULE_annotationUsage]
+        private val functionContract = RULES[LibSLParser.RULE_functionContract]
+        private val functionBody = RULES[LibSLParser.RULE_functionBody]
+        private val functionBodyStatement = RULES[LibSLParser.RULE_functionBodyStatement]
+        private val ifStatement = RULES[LibSLParser.RULE_ifStatement]
+        private val elseStatement = RULES[LibSLParser.RULE_elseStatement]
+
+        //Semantic action
+        private val actionUsage = RULES[LibSLParser.RULE_actionUsage]
+        private val procUsage = RULES[LibSLParser.RULE_procUsage]
+        private val funUsage = RULES[LibSLParser.RULE_funUsage]
+        private val expressionsList = RULES[LibSLParser.RULE_expressionsList]
+        private val annotationArgs = RULES[LibSLParser.RULE_annotationArgs]
         private val argName = RULES[LibSLParser.RULE_argName]
+        //Contracts
+        private val requiresContract = RULES[LibSLParser.RULE_requiresContract]
+        private val ensuresContract = RULES[LibSLParser.RULE_ensuresContract]
+        private val assignsContract = RULES[LibSLParser.RULE_assignsContract]
+
+        //Expression
+        private val expression = RULES[LibSLParser.RULE_expression]
+        private val hasAutomatonConcept = RULES[LibSLParser.RULE_hasAutomatonConcept]
+        private val bitShiftOp = RULES[LibSLParser.RULE_bitShiftOp]
+        private val lShift = RULES[LibSLParser.RULE_lShift]
+        private val rShift = RULES[LibSLParser.RULE_rShift]
+        private val uRShift = RULES[LibSLParser.RULE_uRShift]
+        private val uLShift = RULES[LibSLParser.RULE_uLShift]
+        private val unaryOp = RULES[LibSLParser.RULE_unaryOp]
+        private val expressionAtomic = RULES[LibSLParser.RULE_expressionAtomic]
+        private val primitiveLiteral = RULES[LibSLParser.RULE_primitiveLiteral]
+        private val qualifiedAccess = RULES[LibSLParser.RULE_qualifiedAccess]
+        private val simpleCall = RULES[LibSLParser.RULE_simpleCall]
+        private val identifierList = RULES[LibSLParser.RULE_identifierList]
         private val arrayLiteral = RULES[LibSLParser.RULE_arrayLiteral]
-        private val HEADER = RULES[LibSLParser.RULE_header]
-        //private val FUNCTION_BODY = RULES[LibSLParser.RULE_functionBody]
-        /*private val BLOCK = RULES[LibSLParser.RULE_block]
-        private val VARIABLE_STATEMENT = RULES[LibSLParser.RULE_variableStatement]
-        private val VARIABLE_DECLARATION_LIST = RULES[LibSLParser.RULE_variableDeclarationList]
-        private val VARIABLE_DECLARATION = RULES[LibSLParser.RULE_variableDeclaration]
-        private val IMPORT_STATEMENT = RULES[LibSLParser.RULE_importStatement]
-        private val EXPORT_STATEMENT = RULES[LibSLParser.RULE_exportStatement]
-        private val EXPRESSION_STATEMENT = RULES[LibSLParser.RULE_expressionStatement]
-        private val RETURN_STATEMENT = RULES[LibSLParser.RULE_returnStatement]
-        private val YIELD_STATEMENT = RULES[LibSLParser.RULE_yieldStatement]
-        private val IF_STATEMENT = RULES[LibSLParser.RULE_ifStatement]
-        private val ITERATION_STATEMENT = RULES[LibSLParser.RULE_iterationStatement]
-        private val DO_STATEMENT = createLabeledRuleElement("DoStatement", ITERATION_STATEMENT)
-        private val WHILE_STATEMENT = createLabeledRuleElement("WhileStatement", ITERATION_STATEMENT)
-        private val FOR_STATEMENT = createLabeledRuleElement("ForStatement", ITERATION_STATEMENT)
-        private val FOR_IN_STATEMENT = createLabeledRuleElement("ForInStatement", ITERATION_STATEMENT)
-        private val FOR_OF_STATEMENT = createLabeledRuleElement("ForOfStatement", ITERATION_STATEMENT)
-        private val WITH_STATEMENT = RULES[LibSLParser.RULE_withStatement]
-        private val DEBUGGER_STATEMENT = RULES[LibSLParser.RULE_debuggerStatement]
-        private val PARAMETERS = RULES[LibSLParser.RULE_formalParameterList]
-        private val PARAMETER = RULES[LibSLParser.RULE_formalParameterArg]
-        private val REST_PARAMETER = RULES[LibSLParser.RULE_lastFormalParameterArg]
-        private val EXPRESSION_SEQUENCE = RULES[LibSLParser.RULE_expressionSequence]
-        private val EXPRESSION = RULES[LibSLParser.RULE_singleExpression]
-        private val ARGUMENTS_EXPRESSION = createLabeledRuleElement("ArgumentsExpression", EXPRESSION)
-        private val POST_INCREMENT_EXPRESSION = createLabeledRuleElement("PostIncrementExpression", EXPRESSION)
-        private val POST_DECREASE_EXPRESSION = createLabeledRuleElement("PostDecreaseExpression", EXPRESSION)
-        private val PRE_INCREMENT_EXPRESSION = createLabeledRuleElement("PreIncrementExpression", EXPRESSION)
-        private val PRE_DECREASE_EXPRESSION = createLabeledRuleElement("PreDecreaseExpression", EXPRESSION)
-        private val IDENTIFIER_EXPRESSION = createLabeledRuleElement("IdentifierExpression", EXPRESSION)
-        private val ASSIGNMENT_EXPRESSION = createLabeledRuleElement("AssignmentExpression", EXPRESSION)
-        private val MEMBER_DOT_EXPRESSION = createLabeledRuleElement("MemberDotExpression", EXPRESSION)
-        private val ARGUMENTS = RULES[LibSLParser.RULE_arguments]
-        private val ARGUMENT = RULES[LibSLParser.RULE_argument]
-        private val OBJECT = RULES[LibSLParser.RULE_objectLiteral]
-        private val ARRAY = RULES[LibSLParser.RULE_arrayLiteral]
-        private val PROPERTY_ASSIGNMENT = RULES[LibSLParser.RULE_propertyAssignment]
-        private val PROPERTY_EXPRESSION_ASSIGNMENT = createLabeledRuleElement("PropertyExpressionAssignment", PROPERTY_ASSIGNMENT)
-        private val COMPUTED_PROPERTY_EXPRESSION_ASSIGNMENT = createLabeledRuleElement("ComputedPropertyExpressionAssignment", PROPERTY_ASSIGNMENT)
-        private val FUNCTION_PROPERTY = createLabeledRuleElement("FunctionProperty", PROPERTY_ASSIGNMENT)
-        private val PROPERTY_GETTER = createLabeledRuleElement("PropertyGetter", PROPERTY_ASSIGNMENT)
-        private val PROPERTY_SETTER = createLabeledRuleElement("PropertySetter", PROPERTY_ASSIGNMENT)
-        private val PROPERTY_SHORTHAND = createLabeledRuleElement("PropertyShorthand", PROPERTY_ASSIGNMENT)
-        private val TEMPLATE_STRING = RULES[LibSLParser.RULE_templateStringLiteral]
-        private val ANONYMOUS_FUNCTION = RULES[LibSLParser.RULE_anonymousFunction]
-        private val CLASS_DECLARATION = RULES[LibSLParser.RULE_classDeclaration]
-        private val CLASS_ELEMENT = RULES[LibSLParser.RULE_classElement]
-        private val CLASS_ELEMENT_NAME = RULES[LibSLParser.RULE_classElementName]
-        private val METHOD_DEFINITION = RULES[LibSLParser.RULE_methodDefinition]
-        private val FIELD_DEFINITION = RULES[LibSLParser.RULE_fieldDefinition]
-        private val PROPERTY_NAME = RULES[LibSLParser.RULE_propertyName]
-        private val LABELED_STATEMENT = RULES[LibSLParser.RULE_labelledStatement]
-        private val BREAK_STATEMENT = RULES[LibSLParser.RULE_breakStatement]
-        private val CONTINUE_STATEMENT = RULES[LibSLParser.RULE_continueStatement]
-        private val THROW_STATEMENT = RULES[LibSLParser.RULE_throwStatement]
-        private val TRY_STATEMENT = RULES[LibSLParser.RULE_tryStatement]
-        private val CATCH = RULES[LibSLParser.RULE_catchProduction]
-        private val FINALLY = RULES[LibSLParser.RULE_finallyProduction]
-        private val SWITCH = RULES[LibSLParser.RULE_switchStatement]
-        private val CASE_BLOCK = RULES[LibSLParser.RULE_caseBlock]
-        private val CASE = RULES[LibSLParser.RULE_caseClause]
-        private val DEFAULT_CASE = RULES[LibSLParser.RULE_defaultClause]*/
+        private val periodSeparatedFullName = RULES[LibSLParser.RULE_periodSeparatedFullName]
+        private val integerNumber = RULES[LibSLParser.RULE_integerNumber]
+        private val floatNumber = RULES[LibSLParser.RULE_floatNumber]
+        private val identifierRule = RULES[LibSLParser.RULE_identifierRule]
 
         fun createElement(node: ASTNode): PsiElement {
             return when (node.elementType) {
-                HEADER -> LibSLHeader(node)
-                /*IDENTIFIER_NAME -> JavaScriptIdentifierName(node)
-                LITERAL -> JavaScriptLiteral(node)
-                FUNCTION_DECLARATION -> JavaScriptFunctionDeclaration(node)
-                FUNCTION_BODY -> JavaScriptFunctionBody(node)
-                BLOCK -> JavaScriptBlock(node)
-                VARIABLE_STATEMENT -> JavaScriptVariableStatement(node)
-                VARIABLE_DECLARATION_LIST -> JavaScriptVariableDeclarationList(node)
-                VARIABLE_DECLARATION -> JavaScriptVariableDeclaration(node)
-                IMPORT_STATEMENT -> JavaScriptImportStatement(node)
-                EXPORT_STATEMENT -> JavaScriptExportStatement(node)
-                EXPRESSION_STATEMENT -> JavaScriptExpressionStatement(node)
-                RETURN_STATEMENT -> JavaScriptReturnStatement(node)
-                YIELD_STATEMENT -> JavaScriptYieldStatement(node)
-                IF_STATEMENT -> JavaScriptIfStatement(node)
-                ITERATION_STATEMENT -> unexpectedNode(node)
-                DO_STATEMENT -> JavaScriptDoWhileStatement(node)
-                WHILE_STATEMENT -> JavaScriptWhileStatement(node)
-                FOR_STATEMENT -> JavaScriptForStatement(node)
-                FOR_IN_STATEMENT -> JavaScriptForInStatement(node)
-                FOR_OF_STATEMENT -> JavaScriptForOfStatement(node)
-                WITH_STATEMENT -> JavaScriptWithStatement(node)
-                DEBUGGER_STATEMENT -> JavaScriptDebuggerStatement(node)
-                PARAMETERS -> JavaScriptParameters(node)
-                PARAMETER -> JavaScriptFormalParameter(node)
-                REST_PARAMETER -> JavaScriptFormalRestParameter(node)
-                EXPRESSION_SEQUENCE -> JavaScriptExpressionSequence(node)
-                EXPRESSION -> JavaScriptExpression.Other(node)
-                ARGUMENTS_EXPRESSION -> JavaScriptCallExpression(node)
-                POST_INCREMENT_EXPRESSION -> JavaScriptUpdateExpression(node)
-                POST_DECREASE_EXPRESSION -> JavaScriptUpdateExpression(node)
-                PRE_INCREMENT_EXPRESSION -> JavaScriptUpdateExpression(node)
-                PRE_DECREASE_EXPRESSION -> JavaScriptUpdateExpression(node)
-                IDENTIFIER_EXPRESSION -> JavaScriptIdentifierExpression(node)
-                ASSIGNMENT_EXPRESSION -> JavaScriptAssignmentExpression(node)
-                MEMBER_DOT_EXPRESSION -> JavaScriptMemberDotExpression(node)
-                ARGUMENTS -> JavaScriptArguments(node)
-                ARGUMENT -> JavaScriptArgument(node)
-                OBJECT -> JavaScriptObject(node)
-                ARRAY -> JavaScriptArray(node)
-                PROPERTY_ASSIGNMENT -> unexpectedNode(node)
-                PROPERTY_EXPRESSION_ASSIGNMENT -> JavaScriptPropertyExpressionAssignment(node)
-                COMPUTED_PROPERTY_EXPRESSION_ASSIGNMENT -> JavaScriptComputedPropertyExpressionAssignment(node)
-                FUNCTION_PROPERTY -> JavaScriptFunctionProperty(node)
-                PROPERTY_GETTER -> JavaScriptPropertyGetter(node)
-                PROPERTY_SETTER -> JavaScriptPropertySetter(node)
-                PROPERTY_SHORTHAND -> JavaScriptPropertyShorthand(node)
-                TEMPLATE_STRING -> JavaScriptTemplateString(node)
-                ANONYMOUS_FUNCTION -> JavaScriptAnonymousFunction(node)
-                CLASS_DECLARATION -> JavaScriptClassDeclaration(node)
-                //CLASS_ELEMENT -> createClassElement(node)
-                CLASS_ELEMENT_NAME -> JavaScriptClassElementName(node)
-                METHOD_DEFINITION -> JavaScriptMethodDefinition(node)
-                FIELD_DEFINITION -> JavaScriptFieldDefinition(node)
-                PROPERTY_NAME -> JavaScriptPropertyName(node)
-                LABELED_STATEMENT -> JavaScriptLabeledStatement(node)
-                BREAK_STATEMENT -> JavaScriptBreakStatement(node)
-                CONTINUE_STATEMENT -> JavaScriptContinueStatement(node)
-                THROW_STATEMENT -> JavaScriptThrowStatement(node)
-                TRY_STATEMENT -> JavaScriptTryStatement(node)
-                CATCH -> JavaScriptCatch(node)
-                FINALLY -> JavaScriptFinally(node)
-                SWITCH -> JavaScriptSwitchStatement(node)
-                CASE_BLOCK -> JavaScriptCaseBlock(node)
-                CASE -> JavaScriptCaseClause(node)
-                DEFAULT_CASE -> JavaScriptDefaultClause(node)*/
-                //TODO: other rules
+                file -> LibSLFileRule(node)
+                globalStatement -> LibSLGlobalStatement(node)
+                topLevelDecl -> LibSLTopLevelDecl(node)
+                header -> LibSLHeader(node)
+                typealiasStatement -> LibSLTypealiasStatement(node)
+                typeDefBlock -> LibSLTypeDefBlock(node)
+                targetType -> LibSLTargetType(node)
+                typeList -> LibSLTypeList(node)
+                typeDefBlockStatement -> LibSLTypeDefBlockStatement(node)
+                enumBlock -> LibSLEnumBlock(node)
+                enumBlockStatement -> LibSLEnumBlockStatement(node)
+                typesSection -> LibSLTypesSection(node)
+                semanticTypeDecl -> LibSLSemanticTypeDecl(node)
+                simpleSemanticType -> LibSLSimpleSemanticType(node)
+                enumSemanticType -> LibSLEnumSemanticType(node)
+                enumSemanticTypeEntry -> LibSLEnumSemanticTypeEntry(node)
+                annotationDecl -> LibSLAnnotationDecl(node)
+                annotationDeclParams -> LibSLAnnotationDeclParams(node)
+                annotationDeclParamsPart -> LibSLAnnotationDeclParamsPart(node)
+                actionDecl -> LibSLActionDecl(node)
+                actionDeclParamList -> LibSLActionDeclParamList(node)
+                actionParameter -> LibSLActionParameter(node)
+                automatonDecl -> LibSLAutomatonDecl(node)
+                constructorVariables -> LibSLConstructorVariables(node)
+                automatonStatement -> LibSLAutomatonStatement(node)
+                implementedConcepts -> LibSLImplementedConcepts(node)
+                concept -> LibSLConcept(node)
+                automatonStateDecl -> LibSLAutomatonStateDecl(node)
+                automatonShiftDecl -> LibSLAutomatonShiftDecl(node)
+                functionsList -> LibSLFunctionsList(node)
+                functionsListPart -> LibSLFunctionsListPart(node)
+                variableDecl -> LibSLVariableDecl(node)
+                nameWithType -> LibSLNameWithType(node)
+                typeIdentifier -> LibSLTypeIdentifier(node)
+                generic -> LibSLGeneric(node)
+                variableAssignment -> LibSLVariableAssignment(node)
+                assignmentRight -> LibSLAssignmentRight(node)
+                callAutomatonConstructorWithNamedArgs -> LibSLCallAutomatonConstructorWithNamedArgs(node)
+                namedArgs -> LibSLNamedArgs(node)
+                argPair -> LibSLArgPair(node)
+                headerWithAsterisk -> LibSLHeaderWithAsterisk(node)
+                constructorDecl -> LibSLConstructorDecl(node)
+                constructorHeader -> LibSLConstructorHeader(node)
+                destructorDecl -> LibSLDestructorDecl(node)
+                destructorHeader -> LibSLDestructorHeader(node)
+                procDecl -> LibSLProcDecl(node)
+                procHeader -> LibSLProcHeader(node)
+                functionDecl -> LibSLFunctionDecl(node)
+                functionHeader -> LibSLFunctionHeader(node)
+                functionDeclArgList -> LibSLFunctionDeclArgList(node)
+                parameter -> LibSLParameter(node)
+                annotationUsage -> LibSLAnnotationUsage(node)
+                functionContract -> LibSLFunctionContract(node)
+                functionBody -> LibSLFunctionBody(node)
+                functionBodyStatement -> LibSLFunctionBodyStatement(node)
+                ifStatement -> LibSLIfStatement(node)
+                elseStatement -> LibSLElseStatement(node)
+                actionUsage -> LibSLActionUsage(node)
+                procUsage -> LibSLProcUsage(node)
+                funUsage -> LibSLFunUsage(node)
+                expressionsList -> LibSLExpressionsList(node)
+                annotationArgs -> LibSLAnnotationArgs(node)
+                argName -> LibSLArgName(node)
+                requiresContract -> LibSLRequiresContract(node)
+                ensuresContract -> LibSLEnsuresContract(node)
+                assignsContract -> LibSLAssignsContract(node)
+                expression -> LibSLExpression(node)
+                hasAutomatonConcept -> LibSLHsAutomatonConcept(node)
+                bitShiftOp -> LibSLBitShiftOp(node)
+                lShift -> LibSLLShift(node)
+                rShift -> LibSLRShift(node)
+                uRShift -> LibSLURShift(node)
+                uLShift -> LibSLULShift(node)
+                unaryOp -> LibSLUnaryOp(node)
+                expressionAtomic -> LibSLExpressionAtomic(node)
+                primitiveLiteral -> LibSLPrimitiveLiteral(node)
+                qualifiedAccess -> LibSLQualifiedAccess(node)
+                simpleCall -> LibSLSimpleCall(node)
+                identifierList -> LibSLIdentifierList(node)
+                arrayLiteral -> LibSLArrayLiteral(node)
+                periodSeparatedFullName -> LibSLPeriodSeparatedFullName(node)
+                integerNumber -> LibSLIntegerNumber(node)
+                floatNumber -> LibSLFloatNumber(node)
+                identifierRule -> LibSLIdentifierRule(node)
                 else -> ASTWrapperPsiElement(node)
             }
         }
@@ -282,9 +337,7 @@ object LibSLTypes {
 
         /*private fun createClassElement(node: ASTNode): PsiElement {
             return when (node.lastChildNode?.psi) {
-                is JavaScriptMethodDefinition -> JavaScriptMethod(node)
-                is JavaScriptFieldDefinition -> JavaScriptField(node)
-                is JavaScriptBlock -> JavaScriptClassStaticBlock(node)
+                is LibSLAutomatonDecl -> STUB_CLASS(node)
                 else -> ASTWrapperPsiElement(node)
             }
         }*/

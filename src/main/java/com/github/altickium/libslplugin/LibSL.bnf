@@ -9,16 +9,9 @@
   psiPackage="com.github.altickium.libslplugin.psi"
   psiImplPackage="com.github.altickium.libslplugin.psi.impl"
 
-  //psiImplUtilClass="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyPsiImplUtil"
-
-  //implements="com.github.pyltsin.monkeyplugin.psi.MonkeyCompositeElement"
-  //extends="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyCompositeElementImpl"
-
   elementTypeHolderClass="com.github.altickium.libslplugin.LibSLTypes"
   elementTypeClass="com.github.altickium.libslplugin.psi.LibSLElementType"
   tokenTypeClass="com.github.altickium.libslplugin.psi.LibSLTokenType"
-
-  //elementTypeFactory("var_definition")="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyElementTypeFactory.factory"
 
    tokens = [
         IMPORT = "import"

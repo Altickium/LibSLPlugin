@@ -35,6 +35,23 @@
         <lang.parserDefinition
                 language="LibSL"
                 implementationClass="com.github.altickium.libslplugin.LibSLParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+                language="LibSL"
+                implementationClass="com.github.altickium.libslplugin.psi.highlighter.LibSLSyntaxHighlighter$Factory"/>
+        <colorSettingsPage
+                implementation="com.github.altickium.libslplugin.psi.highlighter.LibSLColorSettingsPage"/>
+        <lang.findUsagesProvider
+                language="LibSL"
+                implementationClass="com.github.altickium.libslplugin.findusageprovider.LibSLFindUsagesProvider"/>
+        <lang.braceMatcher
+                language="LibSL"
+                implementationClass="com.github.altickium.libslplugin.bracematcher.LibSLBraceMatcher"/>
+        <lang.commenter
+                language="LibSL"
+                implementationClass="com.github.altickium.libslplugin.commenter.LibSLCommenter"/>
+        <completion.contributor
+                language="LibSL"
+                implementationClass="com.github.altickium.libslplugin.completion.LibSLCompletionContributor"/>
     </extensions>
 
 </idea-plugin>
